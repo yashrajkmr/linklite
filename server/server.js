@@ -21,7 +21,7 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
   message: 'Too many requests, please try again later'
 });
-app.use('/api/', limiter);
+app.use('/', limiter);
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -30,12 +30,12 @@ mongoose.connect(process.env.MONGODB_URI)
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/links', require('./routes/links'));
+app.use('/auth', require('./routes/auth'));
+app.use('/links', require('./routes/links'));
 app.use('/', require('./routes/redirect')); // Handle short URL redirects
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date() });
 });
 
