@@ -146,7 +146,6 @@ const Analytics = ({ linkId, onClose }) => {
             />
           </div>
 
-          {/* Click Trend Chart */}
           {dates.length > 0 && (
             <div className="bg-gray-50 rounded-lg p-4 sm:p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Click Trend (Last 7 Days)</h3>

@@ -69,12 +69,10 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Create Link Section */}
         <div className="mb-8">
           <CreateLink onLinkCreated={handleLinkCreated} />
         </div>
 
-        {/* Links List */}
         <div>
           <LinkList 
             links={links} 

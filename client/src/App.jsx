@@ -44,7 +44,7 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Toaster 
-            position="top-right"
+            position="bottom-right"
             toastOptions={{
               duration: 3000,
               style: {
