@@ -30,8 +30,8 @@ mongoose.connect(process.env.MONGODB_URI)
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Routes
-app.use('/auth', require('./routes/auth'));
-app.use('/links', require('./routes/links'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/links', require('./routes/links'));
 app.use('/', require('./routes/redirect')); // Handle short URL redirects
 
 // Health check endpoint
