@@ -19,7 +19,6 @@ const Signup = () => {
     e.preventDefault();
     setError('');
 
-    // Basic validation
     if (password.length < 6) {
       const errorMsg = 'Password must be at least 6 characters';
       setError(errorMsg);

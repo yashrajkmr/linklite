@@ -31,7 +31,6 @@ const CreateLink = ({ onLinkCreated }) => {
       setExpiryDate('');
       onLinkCreated();
       
-      // Show success toast
       toast.success('Short link created successfully! 🎉');
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Failed to create link';
@@ -88,7 +87,6 @@ const CreateLink = ({ onLinkCreated }) => {
               </button>
             </div>
 
-            {/* QR Code */}
             <div className="flex items-start gap-4 p-4 bg-white rounded-lg">
               <img 
                 src={createdLink.qrCode} 

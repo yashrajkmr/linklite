@@ -34,7 +34,6 @@ const Dashboard = () => {
     setRefreshTrigger(prev => prev + 1);
   };
 
-  // Calculate stats
   const totalLinks = links.length;
   const totalClicks = links.reduce((sum, link) => sum + link.clicks, 0);
   const activeLinks = links.filter(link => link.isActive).length;

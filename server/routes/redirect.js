@@ -6,12 +6,10 @@ const axios = require('axios');
 
 const router = express.Router();
 
-// GET /:shortCode - Redirect to original URL and track analytics
 router.get('/:shortCode', async (req, res) => {
   try {
     const { shortCode } = req.params;
 
-    // Find link
     const link = await Link.findOne({ shortCode });
 
     if (!link) {
@@ -52,7 +50,6 @@ router.get('/:shortCode', async (req, res) => {
       `);
     }
 
-    // Check if link is active
     if (!link.isActive) {
       return res.status(410).send(`
         <!DOCTYPE html>
@@ -91,7 +88,6 @@ router.get('/:shortCode', async (req, res) => {
       `);
     }
 
-    // Check if link is expired
     if (link.isExpired()) {
       return res.status(410).send(`
         <!DOCTYPE html>
@@ -132,10 +128,8 @@ router.get('/:shortCode', async (req, res) => {
 
     // TODO: Handle password protected links (future enhancement)
 
-    // Track analytics asynchronously
     trackClick(link, req);
 
-    // Redirect to original URL
     res.redirect(link.originalUrl);
   } catch (error) {
     console.error('Redirect error:', error);
@@ -143,32 +137,25 @@ router.get('/:shortCode', async (req, res) => {
   }
 });
 
-// Function to track click analytics
 async function trackClick(link, req) {
   try {
-    // Parse user agent
     const agent = useragent.parse(req.headers['user-agent']);
     
-    // Get referrer
     const referrer = req.headers.referer || req.headers.referrer || 'Direct';
 
-    // Get country from IP (using free ipapi service)
     let country = 'Unknown';
     try {
       const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress;
-      // Skip for localhost/development
       if (ip && !ip.includes('127.0.0.1') && !ip.includes('::1')) {
         const geoResponse = await axios.get(`https://ipapi.co/${ip}/json/`, {
-          timeout: 2000 // Don't wait too long
+          timeout: 2000 
         });
         country = geoResponse.data.country_name || 'Unknown';
       }
     } catch (geoError) {
-      // Silently fail geo lookup
       console.log('Geo lookup failed, using Unknown');
     }
 
-    // Update link with click data
     await Link.findByIdAndUpdate(link._id, {
       $inc: { clicks: 1 },
       $push: {
@@ -183,7 +170,6 @@ async function trackClick(link, req) {
     });
   } catch (error) {
     console.error('Error tracking click:', error);
-    // Don't fail the redirect if tracking fails
   }
 }
 

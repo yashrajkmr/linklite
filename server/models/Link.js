@@ -37,7 +37,7 @@ const linkSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    default: null // For protected links
+    default: null 
   },
   clicksData: [{
     clickedAt: { type: Date, default: Date.now },
@@ -52,11 +52,8 @@ const linkSchema = new mongoose.Schema({
   }
 });
 
-// Index for faster queries
-linkSchema.index({ shortCode: 1 });
 linkSchema.index({ userId: 1, createdAt: -1 });
 
-// Check if link is expired
 linkSchema.methods.isExpired = function() {
   if (!this.expiryDate) return false;
   return new Date() > this.expiryDate;

@@ -46,7 +46,7 @@ const LinkList = ({ links, loading, onLinkDeleted }) => {
       });
       const statusText = !link.isActive ? 'enabled' : 'disabled';
       toast.success(`Link ${statusText} successfully!`);
-      onLinkDeleted(); // Refresh list
+      onLinkDeleted(); 
     } catch (error) {
       console.error('Error updating link:', error);
       toast.error('Failed to update link. Please try again.');
@@ -85,7 +85,6 @@ const LinkList = ({ links, loading, onLinkDeleted }) => {
         {filteredLinks.length === 0 ? (
           <div className="text-center py-16">
             {searchTerm ? (
-              // Empty search results
               <>
                 <div className="mb-4">
                   <Search className="w-16 h-16 mx-auto text-gray-300" />
@@ -94,7 +93,6 @@ const LinkList = ({ links, loading, onLinkDeleted }) => {
                 <p className="text-gray-400">Try searching with different keywords</p>
               </>
             ) : (
-              // No links created yet
               <>
                 <div className="mb-6">
                   <div className="relative inline-block">
@@ -142,7 +140,6 @@ const LinkList = ({ links, loading, onLinkDeleted }) => {
         )}
       </div>
 
-      {/* Analytics Modal */}
       {selectedLink && (
         <Analytics
           linkId={selectedLink.id}
@@ -162,7 +159,6 @@ const LinkCard = ({ link, onCopy, onDelete, onToggleActive, onViewAnalytics, isC
     }`}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
-          {/* Short URL */}
           <div className="flex items-center gap-2 mb-2">
             <a
               href={link.shortUrl}
@@ -181,13 +177,11 @@ const LinkCard = ({ link, onCopy, onDelete, onToggleActive, onViewAnalytics, isC
             </button>
           </div>
 
-          {/* Original URL */}
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
             <ExternalLink className="w-4 h-4 flex-shrink-0" />
             <span className="truncate">{link.originalUrl}</span>
           </div>
 
-          {/* Meta info */}
           <div className="flex flex-wrap gap-4 text-sm text-gray-500">
             <div className="flex items-center gap-1">
               <MousePointerClick className="w-4 h-4" />
@@ -210,7 +204,6 @@ const LinkCard = ({ link, onCopy, onDelete, onToggleActive, onViewAnalytics, isC
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex gap-2">
           <button
             onClick={() => onToggleActive(link)}

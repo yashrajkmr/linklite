@@ -22,7 +22,6 @@ code {
     monospace;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

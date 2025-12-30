@@ -7,15 +7,12 @@ const QRCode = require('qrcode');
 
 const router = express.Router();
 
-// All routes are protected
 router.use(authMiddleware);
 
-// POST /api/links - Create new short link
 router.post('/', async (req, res) => {
   try {
     const { originalUrl, customAlias, expiryDate, password } = req.body;
 
-    // Validate URL
     if (!originalUrl || !validateUrl(originalUrl)) {
       return res.status(400).json({
         success: false,
@@ -23,7 +20,6 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Generate or validate short code
     let shortCode;
     if (customAlias) {
       if (!validateCustomAlias(customAlias)) {
@@ -33,7 +29,6 @@ router.post('/', async (req, res) => {
         });
       }
 
-      // Check if custom alias already exists
       const existingLink = await Link.findOne({ shortCode: customAlias });
       if (existingLink) {
         return res.status(400).json({
@@ -43,7 +38,6 @@ router.post('/', async (req, res) => {
       }
       shortCode = customAlias;
     } else {
-      // Generate unique short code
       let attempts = 0;
       do {
         shortCode = generateShortCode();
@@ -60,7 +54,6 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // Create link
     const link = await Link.create({
       originalUrl,
       shortCode,
@@ -70,7 +63,6 @@ router.post('/', async (req, res) => {
       password: password || null
     });
 
-    // Generate QR code
     const shortUrl = `${process.env.BASE_URL || 'http://localhost:5000'}/${shortCode}`;
     const qrCodeDataUrl = await QRCode.toDataURL(shortUrl);
 
@@ -98,12 +90,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /api/links - Get all user's links
 router.get('/', async (req, res) => {
   try {
     const { search, sortBy = 'createdAt', order = 'desc' } = req.query;
 
-    // Build query
     const query = { userId: req.userId };
     if (search) {
       query.$or = [
@@ -112,7 +102,6 @@ router.get('/', async (req, res) => {
       ];
     }
 
-    // Fetch links
     const links = await Link.find(query)
       .sort({ [sortBy]: order === 'desc' ? -1 : 1 })
       .select('-clicksData'); // Exclude detailed clicks data from list
@@ -140,7 +129,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/links/:id - Get single link with analytics
 router.get('/:id', async (req, res) => {
   try {
     const link = await Link.findOne({
@@ -155,25 +143,21 @@ router.get('/:id', async (req, res) => {
       });
     }
 
-    // Process analytics data
     const last7Days = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const recentClicks = link.clicksData.filter(
       click => new Date(click.clickedAt) > last7Days
     );
 
-    // Group clicks by date
     const clicksByDate = {};
     recentClicks.forEach(click => {
       const date = new Date(click.clickedAt).toLocaleDateString();
       clicksByDate[date] = (clicksByDate[date] || 0) + 1;
     });
 
-    // Get last clicked time
     const lastClicked = link.clicksData.length > 0
       ? link.clicksData[link.clicksData.length - 1].clickedAt
       : null;
 
-    // Generate QR code
     const shortUrl = `${process.env.BASE_URL || 'http://localhost:5000'}/${link.shortCode}`;
     const qrCodeDataUrl = await QRCode.toDataURL(shortUrl);
 
@@ -208,7 +192,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// PATCH /api/links/:id - Update link
 router.patch('/:id', async (req, res) => {
   try {
     const { isActive, expiryDate } = req.body;
@@ -244,7 +227,6 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/links/:id - Delete link
 router.delete('/:id', async (req, res) => {
   try {
     const link = await Link.findOneAndDelete({

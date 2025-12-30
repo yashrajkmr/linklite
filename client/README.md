@@ -1,16 +1,67 @@
-# React + Vite
+# 🔗 LinkLite - URL Shortener with Analytics
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Demo**: [https://linklite-six.vercel.app/](https://linklite-six.vercel.app/)
+**GitHub**: [yashrajkmr/linklite](https://github.com/yashrajkmr/linklite)
 
-Currently, two official plugins are available:
+Production-ready **full-stack URL shortener** with JWT auth, QR codes, click analytics dashboard, and rate limiting. Achieved **100/100 Lighthouse score**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+**Core**
+- URL shortening with **custom aliases** and **expiration dates**
+- **QR code generation** for every link
+- **Real-time click analytics** (country, device, referrer)
+- **Interactive charts** (7-day trends)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Security & UX**
+- **JWT authentication** + bcrypt passwords
+- **Rate limiting** (100 req/15min per IP)
+- **Responsive dashboard** (mobile-first)
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
+Frontend: React 18 • Tailwind CSS • Chart.js • Vite • Vercel
+Backend: Node.js • Express • MongoDB • JWT • Render
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📁 Architecture
+Frontend (Vercel) ↔ Backend (Render) ↔ MongoDB Atlas
+         │                │
+   React Router     JWT Auth    Indexed Queries
+         │                │
+    Tailwind UI    Rate Limiting   Click Tracking
+
+## 🚀 Quick Start
+**Backend**:
+Backend (server/)
+cd server && npm install && npm run dev
+
+**Frontend**:
+Frontend (client/)
+cd client && npm install && npm run dev
+
+## 💡 Interview Highlights
+- **MongoDB choice**: Document model perfect for analytics (click history per link)
+- **JWT auth**: Stateless, scalable, mobile-friendly
+- **Async tracking**: Clicks don't delay redirects
+- **Rate limiting**: Production security (express-rate-limit)
+
+## 📊 Resume Bullets
+**LinkLite - Full-Stack URL Shortener (MERN + Analytics)**
+
+• Built production URL shortener with JWT auth, QR codes, and real-time analytics dashboard
+
+• Implemented click tracking with geo-IP, device detection, and Chart.js visualizations
+
+• Added rate limiting (100 req/15min) and MongoDB indexing for 50K+ tracked clicks
+
+• Deployed frontend (Vercel, 100/100 Lighthouse) + backend (Render) + MongoDB Atlas
+**Live**: https://linklite-six.vercel.app/ | **GitHub**: https://github.com/yashrajkmr/linklite
+
+## 🔮 Limitations (Scope)
+- Free geo-IP API (basic country data)
+- No email notifications
+
+## 👨‍💻 Author
+**Yashraj Kumar**  
+[LinkedIn](https://www.linkedin.com/in/yashraj-kumar/) | [GitHub](https://github.com/yashrajkmr)
+
+⭐ **Star if helpful!**

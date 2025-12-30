@@ -1,4 +1,4 @@
-// src/components/Dashboard/Analytics.jsx - FIXED VERSION
+// src/components/Dashboard/Analytics.jsx
 import React, { useState, useEffect } from 'react';
 import { api } from '../../utils/api';
 import { X, TrendingUp, Globe, Chrome, ExternalLink, Calendar, QrCode } from 'lucide-react';
@@ -59,7 +59,6 @@ const Analytics = ({ linkId, onClose }) => {
     return null;
   }
 
-  // Prepare chart data
   const dates = Object.keys(data.analytics.clicksByDate).sort();
   const clicks = dates.map(date => data.analytics.clicksByDate[date]);
 

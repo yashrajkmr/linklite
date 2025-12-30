@@ -9,7 +9,6 @@ import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
 import Dashboard from './components/Dashboard/Dashboard';
 
-// Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -24,7 +23,6 @@ const ProtectedRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" />;
 };
 
-// Public Route wrapper (redirect to dashboard if already logged in)
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
   

@@ -16,11 +16,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check if user is logged in on mount
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Verify token by fetching user data
       api.get('/auth/me')
         .then(response => {
           setUser(response.data.user);

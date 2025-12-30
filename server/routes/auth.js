@@ -5,19 +5,16 @@ const User = require('../models/User');
 
 const router = express.Router();
 
-// Generate JWT Token
 const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: '7d'
   });
 };
 
-// POST /api/auth/signup - Register new user
 router.post('/signup', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -25,7 +22,6 @@ router.post('/signup', async (req, res) => {
       });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -34,10 +30,8 @@ router.post('/signup', async (req, res) => {
       });
     }
 
-    // Create new user
     const user = await User.create({ name, email, password });
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -59,12 +53,10 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// POST /api/auth/login - Login user
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validation
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -72,7 +64,6 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Find user and include password field
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({
@@ -81,7 +72,6 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({
@@ -90,7 +80,6 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.json({
@@ -112,7 +101,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// GET /api/auth/me - Get current user (protected route)
 router.get('/me', require('../middleware/auth'), async (req, res) => {
   try {
     const user = await User.findById(req.userId);

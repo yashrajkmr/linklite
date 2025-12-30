@@ -9,13 +9,12 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limiting - prevents abuse (good talking point in interviews)
+// Rate limiting - prevents abuse
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
@@ -32,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/links', require('./routes/links'));
-app.use('/', require('./routes/redirect')); // Handle short URL redirects
+app.use('/', require('./routes/redirect'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
